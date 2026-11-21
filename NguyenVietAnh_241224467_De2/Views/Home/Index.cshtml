@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<NguyenVietAnh_241224467_De2.Models.TaiSan>
+<!-- Tài sản mới nhập -->
+<div class="section-head">
+    <h3 id="tieu-de">NguyenVietAnh</h3>
+    <a href="#">Xem tất cả &rsaquo;</a>
+</div>
+<div id="content" class="grid">
+    @foreach(var item in Model)
+    {
+        <div class="asset-card">
+            <a href="#"><img src="/images/@item.Anh" alt="" /></a>
+            <h2>@item.TenTs</h2>
+            <div class="asset-foot"><span class="price">@item.NguyenGia tr</span><a asp-action="Edit" asp-route-id="@item.MaTs" class="btn-buy">Sửa</a></div>
+        </div>
+    }
+
+</div>
+@section Scripts{
+    <script>
+        $(".menu li").click(function(){
+            var id = $(this).attr("id");
+            var tenLoai = $(this).text();
+            $(".menu li").removeClass("active");
+            $(this).addClass("active");
+            if(id){
+                $.ajax({
+                    url:"/Home/TaiSanTheoLoai",
+                    data:{maloai:id},
+                    success:function(response){
+                        $("div#content").html(response);
+                        $("#tieu-de").text(tenLoai);
+                    }
+                });
+            }
+        });
+    </script>
+}
